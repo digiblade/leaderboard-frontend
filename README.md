@@ -1,70 +1,145 @@
-# Getting Started with Create React App
+## Leaderboard Application
+**This project is a Leaderboard Application built using a JavaScript frontend framework (React) and Laravel for the backend. The application includes features such as user management, score tracking, sorting, filtering, QR code generation, and scheduled jobs.**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Features
+- Add/Delete users.
+- Update user scores dynamically.
+- Sort users by name or points.
+- Search users by name.
+- Display user details on clicking their name.
+- Group users by score with average age per group.
+- Generate a QR code storing user address after user creation.
+- Scheduled job to track the highest scorer every 5 minutes and store in the winners table.
+### Tech Stack
+- __Frontend__: React
+- __Backend__: Laravel (PHP)
+- __Database__: MySQL
+- __HTTP Client__: Axios (for React to call backend API)
+### Installation Instructions
 
-## Available Scripts
+##### Backend Setup (Laravel)
+```git clone <repository-link>```
+```cd leaderboard```
+```composer install```
+```php artisan migrate --seed```
+```php artisan serve```
 
-In the project directory, you can run:
+Your Laravel API will now be running on http://127.0.0.1:8000.
 
-### `npm start`
+##### Frontend Setup (React)
+```cd leaderboard/frontend```
+```npm install```
+```npm start```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Your React frontend will now be running on http://localhost:3000.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+### API Endpoints Documentation
+1. GET /api/users
+Description: Retrieves all users in the leaderboard.
+Response:
+```
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "age": 25,
+    "points": 0,
+    "address": "123 Main St"
+  },
+]
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. POST /api/users
+Description: Adds a new user.
+Request Body:
+```
+{
+  "name": "John Doe",
+  "age": 25,
+  "address": "123 Main St"
+}
+```
 
-### `npm run build`
+3. PATCH /api/users/{id}
+Description: Updates a user's points (+/-).
+Request Body:
+```
+{
+	"points_change": -1
+}
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. DELETE /api/users/{id}
+Description: Deletes a user from the leaderboard.
+Response:
+```
+{
+  "message": "User deleted successfully"
+}
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+5. GET /api/users/grouped-by-score
+Description: Retrieves users grouped by their score, including average age for each group.
+Response:
+```
+{
+  "25": {
+    "names": ["Emma", "Liam"],
+    "average_age": 24.5
+  },
+  "18": {
+    "names": ["Noah"],
+    "average_age": 20
+  }
+}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+6. GET /api/users/{id}
+Description: Retrieves details of a specific user.
+Response:
+```
+{
+  "id": 1,
+  "name": "John Doe",
+  "age": 25,
+  "points": 5,
+  "address": "123 Main St"
+}
+```
 
-### `npm run eject`
+### Laravel Commands
+#### 1. Generate Dummy Users
+To generate dummy users using the factory, run the following command:
+``` 
+php artisan generate:dummy-users 50
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### 2. Reset User Scores
+To reset all user scores to zero, run the following command:
+```
+php artisan reset:scores
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### 3. Schedule: Run Jobs
+To run the scheduled job manually for testing, use the following command:
+```
+php artisan schedule:run
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+API URL: http://127.0.0.1:8000/api/users
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
